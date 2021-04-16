@@ -17,7 +17,8 @@ public class Consumer {
 //        props.put("auto.offset.reset", "earliest");
         props.put("enable.auto.commit", "false");
 //        props.put("auto.offset.reset", "earliest");
-        props.put("auto.offset.reset", "latest");
+//        props.put("auto.offset.reset", "latest");
+        props.put("auto.offset.reset", "none");
         props.put("max.poll.records", 1);
 //        props.put("max.poll.interval.ms", "5");
         List<String> interceptors = Collections.singletonList("org.example.MyConsumerInterceptor");

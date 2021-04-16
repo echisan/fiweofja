@@ -80,9 +80,44 @@ hello kafka
 
 > 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
 
-将`auto-offset-reset-test`删除
+将`auto-offset-reset-test`删除后重新创建，也初始化`hello world, hello kafka, hello java`三条消息再进行测试
 
 ```bash
  bin/kafka-topics.sh --delete --topic auto-offset-reset-test --bootstrap-server localhost:9092
 ```
 
+开启消费者，使用如下配置
+
+```java
+props.put("group.id", "test-group");
+props.put("enable.auto.commit", "false");
+props.put("auto.offset.reset", "latest");
+props.put("max.poll.records", 1);
+```
+
+![image-20210416132833954](../images/image-20210416132833954.png)
+
+此时没有收到消息， 再发一条消息`hello consumer`, 此时收到该消息了
+
+![image-20210416132904396](../images/image-20210416132904396.png)
+
+![image-20210416132923527](../images/image-20210416132923527.png)
+
+
+
+#### none
+
+> topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+
+开启消费者，使用如下配置
+
+```java
+props.put("group.id", "test-group");
+props.put("enable.auto.commit", "false");
+props.put("auto.offset.reset", "latest");
+props.put("max.poll.records", 1);
+```
+
+符合预期，抛出异常
+
+![image-20210416141107951](../images/image-20210416141107951.png)
